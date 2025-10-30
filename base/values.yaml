@@ -1,0 +1,34 @@
+appName: myapp
+
+image:
+  repository: nginx
+  tag: latest
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: nginx
+  host: myapp.local
+  path: /
+  tls:
+    enabled: false
+    secretName: ""
+
+externalSecrets:
+  enabled: false # set to true to enable ExternalSecret creation
+  secretName: myapp-secrets
+  remoteKey: myapp/config
+  secretStore:
+    name: my-secret-store
+    kind: SecretStore
+  mountPath: /app/config/secrets.json
+
+env:
+  - name: NODE_ENV
+    value: uat
