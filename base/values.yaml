@@ -32,3 +32,9 @@ externalSecrets:
 env:
   - name: NODE_ENV
     value: uat
+
+configMap:
+  enabled: false
+  name: myapp-config
+  data:
+    MONGO_URI: "mongodb://localhost:27017"
