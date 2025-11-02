@@ -1,33 +1,60 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web
+  name: {{ .Values.appName }}
   namespace: {{ .Values.appName }}
   labels:
-    app: web
+    app: {{ .Values.appName }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: web
+      app: {{ .Values.appName }}
   template:
     metadata:
       labels:
-        app: web
+        app: {{ .Values.appName }}
     spec:
       containers:
-        - name: web
+        - name: {{ .Values.appName }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.port }}
+
+          # Static env vars
           env:
             {{- range .Values.env }}
             - name: {{ .name }}
               value: {{ .value | quote }}
             {{- end }}
+
+            # ConfigMap envs
+            {{- if .Values.configMap.enabled }}
+            {{- range $key, $val := .Values.configMap.data }}
+            - name: {{ $key }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $.Values.configMap.name }}
+                  key: {{ $key }}
+            {{- end }}
+            {{- end }}
+
+          # Mount ExternalSecret as a file
           {{- if .Values.externalSecrets.enabled }}
-          envFrom:
-            - secretRef:
-                name: {{ .Values.externalSecrets.secretName }}
+          volumeMounts:
+            - name: secret-volume
+              mountPath: {{ .Values.externalSecrets.mountPath }}
+              subPath: secrets.json
           {{- end }}
+
+      # Volumes for ExternalSecret
+      {{- if .Values.externalSecrets.enabled }}
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: {{ .Values.externalSecrets.targetName | default .Values.externalSecrets.secretName }}
+            items:
+              - key: {{ .Values.externalSecrets.remoteKey }}
+                path: secrets.json
+      {{- end }}
