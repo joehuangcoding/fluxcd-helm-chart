@@ -35,6 +35,7 @@ spec:
             {{- end }}
 
 
+
             # ConfigMap envs
             {{- if .Values.configMap.enabled }}
             {{- range $key, $val := .Values.configMap.data }}
@@ -64,6 +65,7 @@ spec:
               - key: {{ .Values.externalSecrets.remoteKey }}
                 path: secrets.json
       {{- end }}
+
 
 
 
