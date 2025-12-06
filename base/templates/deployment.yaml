@@ -23,16 +23,18 @@ spec:
             - containerPort: {{ .Values.service.port }}
 
           # Static env vars
+
+          
           env:
-            {{- range .Values.env }}
+          {{- range .Values.env }}
               - name: {{ .name }}
-                {{- if .value }}
-                value: {{ .value | quote }}
-                {{- else if .valueFrom }}
-                valueFrom:
-            {{ toYaml .valueFrom | indent 6 }}
-                {{- end }}
-            {{- end }}
+              {{- if .value }}
+              value: {{ .value | quote }}
+              {{- else if .valueFrom }}
+              valueFrom:
+          {{ toYaml .valueFrom | indent 4 }}
+              {{- end }}
+          {{- end }}
 
 
 
@@ -65,6 +67,7 @@ spec:
               - key: {{ .Values.externalSecrets.remoteKey }}
                 path: secrets.json
       {{- end }}
+
 
 
 
