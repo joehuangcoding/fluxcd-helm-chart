@@ -32,14 +32,14 @@ externalSecrets:
 env:
   - name: NODE_ENV
     value: uat
-  - name: MONGO_URI
-    valueFrom:
-      secretKeyRef:
-        name: db-connection
-        key: CONNECTION_STRING
+  # - name: MONGO_URI
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: db-connection
+  #       key: CONNECTION_STRING
 
 configMap:
-  enabled: true
+  enabled: false
   name: myapp-config
   data:
-    MONGO_URI: "mongodb://localhost:27017"
+    TEST: "TEST"

@@ -24,7 +24,7 @@ spec:
           env:
             {{- range .Values.env }}
             - name: {{ .name }}
-              {{- if .value }}
+              {{- if and (.value) (ne .value "") }}
               value: "{{ .value }}"
               {{- else if .valueFrom }}
               valueFrom:
