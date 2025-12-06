@@ -25,13 +25,6 @@ spec:
           # Static env vars
           env:
             {{- range .Values.env }}
-            - name: {{ .name }}
-              value: {{ .value | quote }}
-            {{- end }}
-
-
-          env:
-            {{- range .Values.env }}
               {{- if .value }}
               - name: {{ .name }}
                 value: {{ .value | quote }}
@@ -71,4 +64,5 @@ spec:
               - key: {{ .Values.externalSecrets.remoteKey }}
                 path: secrets.json
       {{- end }}
+
 
