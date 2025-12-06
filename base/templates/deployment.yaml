@@ -27,8 +27,7 @@ spec:
               {{- if .value }}
               value: {{ .value | quote }}
               {{- else if .valueFrom }}
-              # Todo fix the hardcoded indentation 16
-              valueFrom:{{ toYaml .valueFrom | nindent 14 }}
+              valueFrom: {{ toYaml .valueFrom  | nindent 16 }}
               {{- end }}
             {{- end }}
             # ConfigMap
