@@ -21,20 +21,17 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.port }}
-
-          # Static env vars
           env:
             {{- range .Values.env }}
             - name: {{ .name }}
               {{- if .value }}
               value: {{ .value | quote }}
               {{- else if .valueFrom }}
-              valueFrom:
-                {{- toYaml .valueFrom | nindent 4 }}
+              # Todo fix the hardcoded indentation 16
+              valueFrom:{{ toYaml .valueFrom | nindent 16 }}
               {{- end }}
             {{- end }}
-
-            # ConfigMap envs
+            # ConfigMap
             {{- if .Values.configMap.enabled }}
             {{- range $key, $val := .Values.configMap.data }}
             - name: {{ $key }}
