@@ -1,5 +1,9 @@
 appName: myapp
 
+
+imagePullSecrets:
+  - name: ghcr-secret
+
 image:
   repository: nginx
   tag: latest
