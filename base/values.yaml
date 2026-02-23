@@ -32,6 +32,8 @@ externalSecrets:
     name: my-secret-store
     kind: SecretStore
   mountPath: /app/config/secrets.json
+  envFrom:
+    enabled: false
 
 env:
   - name: NODE_ENV
