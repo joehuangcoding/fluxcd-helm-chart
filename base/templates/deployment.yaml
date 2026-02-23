@@ -49,10 +49,10 @@ spec:
                   key: {{ $key }}
             {{- end }}
             {{- end }}
-          {{- if .Values.externalSecret.envFrom.enabled }}
+          {{- if .Values.externalSecrets.envFrom.enabled }}
           envFrom:
             - secretRef:
-                name: {{ .Values.externalSecret.envFrom.name }}
+                name: {{ .Values.externalSecrets.envFrom.name }}
           {{- end }}
           # Mount ExternalSecret as a file
           {{- if .Values.externalSecrets.enabled }}
@@ -72,6 +72,7 @@ spec:
               - key: {{ .Values.externalSecrets.remoteKey }}
                 path: secrets.json
       {{- end }}
+
 
 
 
